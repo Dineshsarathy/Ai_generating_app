@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-multipart
+transformers
+torch
+diffusers
+easyocr
+pillow
+python-dotenv
