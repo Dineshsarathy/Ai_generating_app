@@ -1,0 +1,96 @@
+/* Container Styling */
+.video-generator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Box */
+.input-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-box textarea {
+    width: 300px;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+    font-size: 16px;
+}
+
+.generate-btn {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #6a5acd;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.generate-btn:hover {
+    background-color: #574bb8;
+}
+
+/* Output Box */
+.output-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-preview {
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.try-now-btn, .copy-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.try-now-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.try-now-btn:hover {
+    background-color: #0056b3;
+}
+
+.copy-btn {
+    background-color: #ff1493;
+    color: white;
+}
+
+.copy-btn:hover {
+    background-color: #c5117b;
+}

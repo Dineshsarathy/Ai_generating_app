@@ -1,0 +1,205 @@
+/* General Styling */
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #74ebd5, #acb6e5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Auth Container */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 450px; /* Increased width */
+    padding: 20px;
+}
+
+.auth-box {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px; /* Increased from 400px to 450px */
+    text-align: center;
+}
+  
+  .auth-box h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .auth-box p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Input Fields */
+  .auth-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  
+  /* Buttons */
+  .auth-box button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .login-btn {
+    background: #4caf50;
+  }
+  .login-btn:hover {
+    background: #45a049;
+  }
+  
+  .signup-btn {
+    background: #007bff;
+  }
+  .signup-btn:hover {
+    background: #0056b3;
+  }
+  
+  /* Social Login */
+  .social-login p {
+    margin: 15px 0;
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .facebook, .google {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .facebook {
+    background: #1877f2;
+  }
+  .facebook:hover {
+    background: #165dd5;
+  }
+  
+  .google {
+    background: #db4437;
+  }
+  .google:hover {
+    background: #c1351d;
+  }
+  
+  /* Remember Me & Forgot Password */
+  .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: 10px 0;
+  }
+  
+  .remember-forgot label {
+    display: flex;
+    align-items: center;
+    color: #666;
+  }
+  
+  .remember-forgot a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .remember-forgot a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Forgot Password Popup */
+.reset-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .reset-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reset-box input {
+    width: 95%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .reset-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 95%;
+  }
+  
+  .reset-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .reset-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: green;
+  }
+  
+  .close-btn {
+    margin-top: 10px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 95%;
+  }
+  /* Responsive Design */
+@media (max-width: 500px) {
+    .auth-box {
+        width: 95%;
+        padding: 25px;
+    }
+}
+  

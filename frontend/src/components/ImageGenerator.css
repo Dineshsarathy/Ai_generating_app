@@ -1,0 +1,98 @@
+.image-generator-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Input Box */
+  .input-box {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-box h3 {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .input-box input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    margin-top: 5px;
+  }
+  
+  .generate-btn {
+    width: 100%;
+    background: #5a67d8;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .generate-btn:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
+  
+  /* Output Box */
+  .output-box {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .output-box h3 {
+    font-weight: bold;
+  }
+  
+  .image-card {
+    background: linear-gradient(135deg, #eef2ff, #d7e1fc);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .image-card img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  
+  .buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .download-btn {
+    background: #6a5acd;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .icon {
+    font-size: 18px;
+  }
+  
