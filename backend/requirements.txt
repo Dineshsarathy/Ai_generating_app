@@ -7,3 +7,7 @@ diffusers
 easyocr
 pillow
 python-dotenv
+uvicorn
+sqlalchemy  # Add this if missing
+psycopg2-binary  # If using PostgreSQL
+pymysql  # If using MySQL

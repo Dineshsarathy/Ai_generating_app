@@ -35,6 +35,18 @@ function VideoGenerator({ addToHistory }) {
         }
     };
 
+    const downloadVideo = (e) => {
+        e.preventDefault();
+        if (!videoUrl) return;
+
+        const a = document.createElement("a");
+        a.href = videoUrl;
+        a.download = "generated_video.mp4"; // ✅ Sets filename
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
     return (
         <div className="generator-container">
             {/* Left: Input Box */}
@@ -61,7 +73,7 @@ function VideoGenerator({ addToHistory }) {
                         </div>
                         <video controls width="100%" src={videoUrl} className="video-preview" />
                         <div className="buttons">
-                            <a href={videoUrl} download="generated_video.mp4" className="download-btn">
+                        <a href={videoUrl} download="generated_video.mp4" className="download-btn" onClick={downloadVideo}>
                                 📥 Download
                             </a>
                         </div>

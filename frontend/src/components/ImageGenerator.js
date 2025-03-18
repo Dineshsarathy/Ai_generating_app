@@ -44,15 +44,28 @@ function ImageGenerator({ addToHistory }) {
         }
     };
 
-    const handleDownload = () => {
+    const handleDownload = async () => {
         if (!imageUrl) return;
-        const link = document.createElement("a");
-        link.href = imageUrl;
-        link.download = "generated-image.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    
+        try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob(); // Convert image to Blob
+    
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "generated-image.png"; // Set filename
+    
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+    
+            // Cleanup Blob URL
+            URL.revokeObjectURL(link.href);
+        } catch (error) {
+            console.error("Download failed:", error);
+        }
     };
+    
 
     return (
         <div className="image-generator-container">
