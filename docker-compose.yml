@@ -27,7 +27,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://postgres:Dinesh@0402@postgres:5432/ai_db
+      DATABASE_URL: postgresql://postgres:Dinesh%400402@postgres:5432/ai_db
     networks:
       - app_network
 

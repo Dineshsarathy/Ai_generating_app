@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:Dinesh%400402@localhost/ai_db")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:Dinesh%400402@postgres:5432/ai_db")
 
 
 # ✅ Create Database Engine

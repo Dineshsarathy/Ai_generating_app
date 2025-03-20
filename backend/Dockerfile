@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 EXPOSE 8000
 
 # Set environment variables (if required)
-ENV DATABASE_URL=postgresql://postgres:Dinesh%400402@localhost/ai_db
+ENV DATABASE_URL=postgresql://postgres:Dinesh%400402@postgres:5432/ai_db
 
 # Command to run FastAPI application
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
