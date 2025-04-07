@@ -5,6 +5,7 @@ function TextGenerator({ addToHistory, selectedHistoryItem }) {
     const [prompt, setPrompt] = useState("");
     const [generatedText, setGeneratedText] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     // Handle Generate Button Click
     const handleGenerate = async () => {
@@ -28,7 +29,7 @@ function TextGenerator({ addToHistory, selectedHistoryItem }) {
             const generatedResponse = {
                 title: "Pollo AI",
                 description: data.text,
-                tags: ["Video Generation", "Image Generation"],
+                tags: ["Text Generation"],
                 link: "#",
             };
 
@@ -40,6 +41,19 @@ function TextGenerator({ addToHistory, selectedHistoryItem }) {
         } finally {
             setLoading(false);
         }
+    };
+        // Handle Copy Button Click
+    const handleCopy = () => {
+        if (!generatedText?.description) return;
+        
+        navigator.clipboard.writeText(generatedText.description)
+            .then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
     };
 
     // Update input & generated text when a history item is selected
@@ -83,7 +97,12 @@ function TextGenerator({ addToHistory, selectedHistoryItem }) {
                             <p>{generatedText.description}</p>
                             <div className="buttons">
                                 <a href={generatedText.link} className="try-now-btn" target="_blank">Try Now</a>
-                                <button className="copy-btn" onClick={() => navigator.clipboard.writeText(generatedText.description)}>📋 Copy</button>
+                                <button 
+                                    className={`copy-btn ${copied ? 'copied' : ''}`} 
+                                    onClick={handleCopy}
+                                >
+                                    {copied ? '✓ Copied!' : '📋 Copy'}
+                                </button>
                             </div>
                         </div>
                     </div>

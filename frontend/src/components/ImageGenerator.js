@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload , FaCopy, FaRandom} from "react-icons/fa";
 import { LuImagePlus } from "react-icons/lu";
 import "./ImageGenerator.css"; 
 
@@ -8,6 +8,20 @@ function ImageGenerator({ addToHistory }) {
     const [imageUrl, setImageUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [style, setStyle] = useState("Realistic"); // New state for image style
+
+    const randomPrompts = [
+        "A futuristic city at sunset",
+        "A cyberpunk robot warrior",
+        "A cute anime-style cat",
+        "A magical forest with glowing trees",
+        "A spaceship landing on Mars"
+    ];
+
+    const generateRandomPrompt = () => {
+        const randomIndex = Math.floor(Math.random() * randomPrompts.length);
+        setPrompt(randomPrompts[randomIndex]);
+    };
 
     const handleGenerate = async () => {
         if (!prompt.trim()) {
@@ -65,6 +79,12 @@ function ImageGenerator({ addToHistory }) {
             console.error("Download failed:", error);
         }
     };
+
+    const handleCopyUrl = () => {
+        navigator.clipboard.writeText(imageUrl)
+            .then(() => alert("Image URL copied to clipboard!"))
+            .catch((err) => console.error("Copy failed:", err));
+    };
     
 
     return (
@@ -77,11 +97,27 @@ function ImageGenerator({ addToHistory }) {
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Enter prompt for image..."
                 />
+
+                <button className="random-btn" onClick={generateRandomPrompt}>
+                    <FaRandom /> Random Prompt
+                </button>
+
+                <label>Choose Style:</label>
+                <select value={style} onChange={(e) => setStyle(e.target.value)}>
+                    <option value="Realistic">Realistic</option>
+                    <option value="Anime">Anime</option>
+                    <option value="Cartoon">Cartoon</option>
+                    <option value="Fantasy">Fantasy</option>
+                </select>
+
+
                 <button onClick={handleGenerate} disabled={loading} className="generate-btn">
                     {loading ? "Generating..." : "Generate Image"}
                 </button>
                 {error && <p className="error-message">{error}</p>}
             </div>
+
+            {loading && <div className="loading-spinner"></div>} 
 
             {imageUrl && (
                 <div className="output-box">
@@ -91,6 +127,9 @@ function ImageGenerator({ addToHistory }) {
                         <div className="buttons">
                             <button className="download-btn" onClick={handleDownload}>
                                 <FaDownload /> Download
+                            </button>
+                            <button className="copy-btn" onClick={handleCopyUrl}>
+                                <FaCopy /> Copy URL
                             </button>
                         </div>
                     </div>

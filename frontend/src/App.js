@@ -7,41 +7,58 @@ import TextGenerator from "./components/TextGenerator";
 import ContentGenerator from "./components/ContentGenerator";
 import VideoGenerator from "./components/VideoGenerator";
 import HistoryPanel from "./components/HistoryPanel";
-import "./App.css"; // Ensure styles are applied
+import "./App.css";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("darkMode");
+    return savedTheme ? JSON.parse(savedTheme) : false;
+  });
 
-  // Load authentication status from localStorage on app load
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuthenticated") === "true";
     setIsAuthenticated(storedAuth);
   }, []);
 
-  // Handle login
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem("darkMode", JSON.stringify(newMode));
+  };
+
   const handleLogin = () => {
     localStorage.setItem("isAuthenticated", "true");
     setIsAuthenticated(true);
   };
 
-  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     setIsAuthenticated(false);
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />
-        <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup onSignup={handleLogin} />} />
-        <Route path="/" element={isAuthenticated ? <MainApp onLogout={handleLogout} /> : <Navigate to="/login" />} />
-      </Routes>
-    </Router>
+    <div className={darkMode ? "dark-mode" : "light-mode"}>
+      <Router>
+        <Routes>
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login onLogin={handleLogin} darkMode={darkMode} />} />
+          <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup onSignup={handleLogin} darkMode={darkMode} />} />
+          <Route path="/" element={
+            isAuthenticated ? 
+              <MainApp 
+                onLogout={handleLogout} 
+                darkMode={darkMode} 
+                toggleDarkMode={toggleDarkMode} 
+              /> : 
+              <Navigate to="/login" />
+          } />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 
-const MainApp = ({ onLogout }) => {
+const MainApp = ({ onLogout, darkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("text");
   const [showLogout, setShowLogout] = useState(false);
@@ -53,35 +70,45 @@ const MainApp = ({ onLogout }) => {
   });
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
 
-  // Save generated content in history
   const addToHistory = (type, item) => {
     setHistory((prev) => ({
       ...prev,
-      [type]: [...(prev[type] || []), item], // Ensure prev[type] is always an array
+      [type]: [...(prev[type] || []), item],
     }));
   };
-  
 
-  // Switch tabs
   const switchTab = (tab) => {
     setActiveTab(tab);
-    setSelectedHistoryItem(null); // Reset selected history on tab switch
+    setSelectedHistoryItem(null);
   };
 
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1 className="app-title">Gen-AI</h1>
+        <h1 className="app-title">Generative-AI</h1>
         <nav className="nav-bar">
-          <button className={activeTab === "text" ? "active" : ""} onClick={() => switchTab("text")}>Text Generate</button>
-          <button className={activeTab === "image" ? "active" : ""} onClick={() => switchTab("image")}>Image Generate</button>
-          <button className={activeTab === "video" ? "active" : ""} onClick={() => switchTab("video")}>Video Generate</button>
-          <button className={activeTab === "content" ? "active" : ""} onClick={() => switchTab("content")}>Content Generate</button>
+          <button className={activeTab === "text" ? "active" : ""} onClick={() => switchTab("text")}>
+            Text Generate
+          </button>
+          <button className={activeTab === "image" ? "active" : ""} onClick={() => switchTab("image")}>
+            Image Generate
+          </button>
+          <button className={activeTab === "video" ? "active" : ""} onClick={() => switchTab("video")}>
+            Video Generate
+          </button>
+          <button className={activeTab === "content" ? "active" : ""} onClick={() => switchTab("content")}>
+            Content Generate
+          </button>
 
-          {/* Profile Section */}
+          <div className="theme-toggle-container">
+            <button onClick={toggleDarkMode} className="theme-toggle-btn">
+              {darkMode ? "☀️ Light" : "🌙 Dark"}
+            </button>
+          </div>
+
           <div className="profile-section">
             <button onClick={() => setShowLogout(!showLogout)} className="profile-button">
-              Profile ⬇
+              User Profile ⬇
             </button>
             {showLogout && (
               <div className="dropdown-menu">
@@ -93,15 +120,12 @@ const MainApp = ({ onLogout }) => {
       </header>
 
       <div className="main-content">
-        {/* Left Side - History Panel */}
-        <HistoryPanel history={history[activeTab]} onSelect={setSelectedHistoryItem} />
-
-        {/* Right Side - AI Generators */}
+        <HistoryPanel history={history[activeTab]} onSelect={setSelectedHistoryItem} darkMode={darkMode} />
         <section className="generator-section">
-          {activeTab === "text" && <TextGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} />}
-          {activeTab === "image" && <ImageGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} />}
-          {activeTab === "video" && <VideoGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} />}
-          {activeTab === "content" && <ContentGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} />}
+          {activeTab === "text" && <TextGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} darkMode={darkMode} />}
+          {activeTab === "image" && <ImageGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} darkMode={darkMode} />}
+          {activeTab === "video" && <VideoGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} darkMode={darkMode} />}
+          {activeTab === "content" && <ContentGenerator addToHistory={addToHistory} selectedHistoryItem={selectedHistoryItem} darkMode={darkMode} />}
         </section>
       </div>
     </div>

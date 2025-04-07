@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, provider} from "../firebaseConfig"; // Firebase config
+import { auth, provider } from "../firebaseConfig";
 import { 
   signInWithEmailAndPassword, 
   signInWithPopup, 
   sendPasswordResetEmail 
 } from "firebase/auth";
-import "../styles/Auth.css"; // Shared styles for Login & Signup
+import { FaGoogle } from "react-icons/fa";
+import "../styles/Auth.css";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -14,29 +15,36 @@ const Login = ({ onLogin }) => {
   const [showResetPopup, setShowResetPopup] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetMessage, setResetMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // 🔹 Handle Email/Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("isAuthenticated", "true");
       localStorage.setItem("loggedInUser", userCredential.user.email);
       onLogin();
       navigate("/");
-    } catch (error) {
-      if (error.code === "auth/user-not-found") {
-        alert("User does not exist. Please sign up.");
-      } else if (error.code === "auth/wrong-password") {
-        alert("Incorrect password. Try again.");
-      } else {
-        alert("Error: " + error.message);
+    } catch (err) {
+      setLoading(false);
+      switch (err.code) {
+        case "auth/user-not-found":
+          setError("User not found. Please sign up.");
+          break;
+        case "auth/wrong-password":
+          setError("Incorrect password. Please try again.");
+          break;
+        default:
+          setError("Login failed. Please try again later.");
       }
     }
   };
 
-  // 🔹 Google Login
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -44,35 +52,33 @@ const Login = ({ onLogin }) => {
       localStorage.setItem("loggedInUser", result.user.email);
       onLogin();
       navigate("/");
-    } catch (error) {
-      console.error("Google Sign-in Error:", error);
-      alert("Google login failed. Try again.");
+    } catch (err) {
+      setError("Google login failed. Please try again.");
     }
   };
 
-
-
-  // 🔹 Forgot Password Popup Controls
+  // Add this missing function
   const openResetPopup = () => {
     setShowResetPopup(true);
-    setResetMessage(""); // Clear any previous message
-  };
-  const closeResetPopup = () => {
-    setShowResetPopup(false);
-    setResetEmail(""); // Clear input
+    setResetMessage("");
   };
 
-  // 🔹 Handle Password Reset
   const handlePasswordReset = async () => {
     if (!resetEmail) {
-      setResetMessage("Please enter your email.");
+      setResetMessage("Please enter your email address.");
       return;
     }
+    
     try {
       await sendPasswordResetEmail(auth, resetEmail);
-      setResetMessage("Reset link sent! Check your email.");
-    } catch (error) {
-      setResetMessage("Error: " + error.message);
+      setResetMessage("Password reset link sent to your email!");
+      setTimeout(() => {
+        setShowResetPopup(false);
+        setResetEmail("");
+        setResetMessage("");
+      }, 3000);
+    } catch (err) {
+      setResetMessage("Error sending reset email. Please try again.");
     }
   };
 
@@ -80,8 +86,11 @@ const Login = ({ onLogin }) => {
     <div className="auth-container">
       <div className="auth-box">
         <div className="auth-form">
-          <h2>Welcome back to Login page</h2>
-          <p>It's great to have you back!</p>
+          <h2>Welcome Back</h2>
+          <p>Please login to continue</p>
+          
+          {error && <p className="error-message">{error}</p>}
+          
           <form onSubmit={handleLogin}>
             <input
               type="email"
@@ -90,6 +99,7 @@ const Login = ({ onLogin }) => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+            
             <input
               type="password"
               placeholder="Password"
@@ -97,45 +107,68 @@ const Login = ({ onLogin }) => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            
             <div className="remember-forgot">
-              <label>
-                <input type="checkbox" /> Remember me
-              </label>
-              <a href="#" onClick={openResetPopup}>Forgot password?</a>
+              <div className="remember-me">
+                <input type="checkbox" id="remember" />
+                <label htmlFor="remember">Remember me</label>
+              </div>
+              <span className="link" onClick={openResetPopup}>Forgot password?</span>
             </div>
-            <button type="submit" className="login-btn">Login</button>
-            <p>Don't have an Account? Create an Account Here!</p>
-            <button className="signup-btn" onClick={() => navigate("/signup")}>
-              Signup
+            
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
             </button>
+            
             <div className="social-login">
               <p>Or login with</p>
-              <button onClick={handleGoogleLogin} className="google">
-                Google
+              <button type="button" className="btn google-btn" onClick={handleGoogleLogin}>
+                <FaGoogle /> Continue with Google
               </button>
             </div>
+            
+            <p className="text-center">
+              Don't have an account?{" "}
+              <span className="link" onClick={() => navigate("/signup")}>Sign up</span>
+            </p>
           </form>
         </div>
-        <div className="auth-image"></div>
+        
+        <div className="auth-image">
+          <img src={require("../assets/login2.jpeg")} alt="Login visual" />
+        </div>
       </div>
-
-      {/* 🔹 Forgot Password Popup */}
+      
       {showResetPopup && (
         <div className="reset-popup">
           <div className="reset-box">
-            <h3>Reset Your Password</h3>
+            <h3>Reset Password</h3>
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Your email address"
               value={resetEmail}
               onChange={(e) => setResetEmail(e.target.value)}
-              required
+              style={{
+                width: '90%',       // Adjust width as needed
+                maxWidth: '400px',   // Limit max-width to make it responsive
+                height: '8px',      // Adjust height
+                fontSize: '1.2rem',  // Adjust font size
+                padding: '10px',     // Adjust padding inside the input box
+                borderRadius: '8px', // Optional: add rounded corners
+              }}
             />
-            <button onClick={handlePasswordReset} className="reset-btn">
+            <button className="btn btn-secondary" onClick={handlePasswordReset}>
               Send Reset Link
             </button>
-            <p className="reset-message">{resetMessage}</p>
-            <button onClick={closeResetPopup} className="close-btn">
+            {resetMessage && <p className="reset-message">{resetMessage}</p>}
+            <button 
+              className="btn" 
+              onClick={() => {
+                setShowResetPopup(false);
+                setResetEmail("");
+                setResetMessage("");
+              }}
+            >
               Close
             </button>
           </div>

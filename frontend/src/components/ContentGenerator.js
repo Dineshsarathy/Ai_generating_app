@@ -5,6 +5,19 @@ function ContentGenerator({ addToHistory, selectedHistoryItem }) {
     const [prompt, setPrompt] = useState("");
     const [generatedContent, setGeneratedContent] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        if (generatedContent && generatedContent.description) {
+            navigator.clipboard.writeText(generatedContent.description)
+                .then(() => {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+                })
+                .catch((err) => console.error("Failed to copy: ", err));
+        }
+    };
+    
 
     // Pre-fill the input box when a history item is selected
     React.useEffect(() => {
@@ -80,7 +93,12 @@ function ContentGenerator({ addToHistory, selectedHistoryItem }) {
                             <p>{generatedContent.description}</p>
                             <div className="buttons">
                                 <a href={generatedContent.link} className="try-now-btn" target="_blank">Try Now</a>
-                                <button className="copy-btn" onClick={() => navigator.clipboard.writeText(generatedContent.description)}>📋 Copy</button>
+                                <button 
+                                    className={`copy-btn ${copied ? 'copied' : ''}`} 
+                                    onClick={handleCopy}
+                                >
+                                    {copied ? '✓ Copied!' : '📋 Copy'}
+                                </button>
                             </div>
                         </div>
                     </div>
